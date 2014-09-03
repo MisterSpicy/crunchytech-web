@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+rom flask import Flask
  
 app = Flask(__name__)      
  
@@ -8,3 +8,8 @@ def home():
  
 if __name__ == '__main__':
   app.run(host='0.0.0.0')
+
+@app.route('/add', methods=['GET'])
+
+def add_entry():
+    return "HELLO WORLD"
