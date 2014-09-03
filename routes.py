@@ -33,16 +33,18 @@ def register():
         print "POST REQUEST"
         name = request.form['name']
         ident = request.form['ident']
-        purl = request.form['purl']
+        profileurl = request.form['profileurl']
         headline = request.form['headline']
+        picurl = request.form['picurl']
 
         print name
         print ident
-        print purl
+        print profileurl
+        print picurl
         print headline
 
         print "INSERT INTO DB"
-        g.db.execute('insert into entries (name, ident, purl, headline) values (?, ?, ?, ?)', [name, ident, purl, headline])
+        g.db.execute('insert into entries (name, ident, profileurl, headline, picurl) values (?, ?, ?, ?, ?)', [name, ident, profileurl, headline, picurl])
         g.db.commit()
     
         print "BOOBS"
@@ -54,11 +56,11 @@ def register():
 def getnearby(): 
     print "GETTING NEARBY PEOPLE"
     
-    cur = g.db.execute('select name, ident, purl, headline from entries')
-    entries = [dict(name=row[0], ident=row[1], purl=row[2], headline=row[3]) for row in cur.fetchall()]
+    cur = g.db.execute('select name, ident, profileurl, headline, picurl from entries')
+    entries = [dict(name=row[0], ident=row[1], profileurl=row[2], headline=row[3], picurl=row[4]) for row in cur.fetchall()]
     print entries 
     return jsonify({ 'users' : entries })
 
 if __name__ == '__main__':
   #app.run(debug=True)
-  app.run(host='0.0.0.0')
+  app.run(debug=True)
