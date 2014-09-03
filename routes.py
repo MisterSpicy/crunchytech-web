@@ -47,7 +47,7 @@ def register():
     
         users['ident'] = name
         print "BOOBS"
-        return "BOOBS"
+        return "BOOBS<p>"
 
     print new_dict['someshit']
     return "REGISTRATION"
