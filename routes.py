@@ -27,13 +27,6 @@ def teardown_request(exception):
         print "DB IS NOT NONE"
         db.close()
  
-@app.route('/')
-def show_entries():
-    cur = g.db.execute('select name, ident from entries')
-    entries = [dict(name=row[0], ident=row[1]) for row in cur.fetchall()]
-    print entries
-    return "FUNBAGS"
-
 @app.route('/register', methods=['POST'])
 def register():
     print "registering shit" + request.method
@@ -42,11 +35,14 @@ def register():
         print "POST REQUEST"
         name = request.form['name']
         ident = request.form['ident']
+        purl = request.form['purl']
+
         print name
         print ident
+        print purl
 
         print "INSERT INTO DB"
-        g.db.execute('insert into entries (name, ident) values (?, ?)', [name, ident])
+        g.db.execute('insert into entries (name, ident, purl) values (?, ?, ?)', [name, ident, purl])
         g.db.commit()
     
         users['ident'] = name
@@ -60,10 +56,10 @@ def register():
 def getnearby(): 
     print "GETTING NEARBY PEOPLE"
     
-    cur = g.db.execute('select name, ident from entries')
-    entries = [dict(name=row[0], ident=row[1]) for row in cur.fetchall()]
+    cur = g.db.execute('select name, ident, purl from entries')
+    entries = [dict(name=row[0], ident=row[1], purl=row[2]) for row in cur.fetchall()]
     print entries 
     return jsonify({ 'users' : entries })
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0')
+  app.run(debug=True)
