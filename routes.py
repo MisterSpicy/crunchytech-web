@@ -3,8 +3,6 @@ from flask import Flask, request, jsonify, g
  
 app = Flask(__name__)
 
-users = {}
-
 # configuration
 DATABASE = '/tmp/breeze.db'
 DEBUG = True
@@ -36,31 +34,31 @@ def register():
         name = request.form['name']
         ident = request.form['ident']
         purl = request.form['purl']
+        headline = request.form['headline']
 
         print name
         print ident
         print purl
+        print headline
 
         print "INSERT INTO DB"
-        g.db.execute('insert into entries (name, ident, purl) values (?, ?, ?)', [name, ident, purl])
+        g.db.execute('insert into entries (name, ident, purl, headline) values (?, ?, ?, ?)', [name, ident, purl, headline])
         g.db.commit()
     
-        users['ident'] = name
         print "BOOBS"
-        return "BOOBS<p>"
+        return "BOOBS"
 
-    print new_dict['someshit']
     return "REGISTRATION"
 
 @app.route('/getnearby', methods=['GET'])
 def getnearby(): 
     print "GETTING NEARBY PEOPLE"
     
-    cur = g.db.execute('select name, ident, purl from entries')
-    entries = [dict(name=row[0], ident=row[1], purl=row[2]) for row in cur.fetchall()]
+    cur = g.db.execute('select name, ident, purl, headline from entries')
+    entries = [dict(name=row[0], ident=row[1], purl=row[2], headline=row[3]) for row in cur.fetchall()]
     print entries 
     return jsonify({ 'users' : entries })
 
 if __name__ == '__main__':
   #app.run(debug=True)
-  app.run(host='0.0.0.0')
+  app.run(debug=True)
