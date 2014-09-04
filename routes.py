@@ -56,7 +56,7 @@ def register():
 def getnearby(): 
     print "GETTING NEARBY PEOPLE"
     
-    cur = g.db.execute('select name, ident, profileurl, headline, picurl from entries')
+    cur = g.db.execute('select name, ident, profileurl, headline, picurl from entries group by ident')
     entries = [dict(name=row[0], ident=row[1], profileurl=row[2], headline=row[3], picurl=row[4]) for row in cur.fetchall()]
     print entries 
     return jsonify({ 'users' : entries })
